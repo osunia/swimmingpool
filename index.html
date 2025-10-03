@@ -476,31 +476,31 @@
                     <input type="text" id="memo-input" placeholder="메모를 입력하세요." maxlength="20">
                 </div>
                 <div class="time-add-buttons" id="time-add-buttons">
-                    <button class="time-add" data-time="60">+1m</button>
-                    <button class="time-add" data-time="300">+5m</button>
-                    <button class="time-add" data-time="600">+10m</button>
-                    <button class="time-add" data-time="3600">+1h</button>
+                    <button class="base-control-button time-add" data-time="60">+1m</button>
+                    <button class="base-control-button time-add" data-time="300">+5m</button>
+                    <button class="base-control-button time-add" data-time="600">+10m</button>
+                    <button class="base-control-button time-add" data-time="3600">+1h</button>
                 </div>
                 <div class="button-container" id="timer-control-buttons">
-                    <button class="control-btn" id="timer-start"><span class="material-symbols-outlined">play_arrow</span></button>
-                    <button class="control-btn" id="timer-pause"><span class="material-symbols-outlined">pause</span></button>
-                    <button class="control-btn" id="timer-reset"><span class="material-symbols-outlined">refresh</span></button>
+                    <button class="base-control-button control-btn" id="timer-start"><span class="material-symbols-outlined">play_arrow</span></button>
+                    <button class="base-control-button control-btn" id="timer-pause"><span class="material-symbols-outlined">pause</span></button>
+                    <button class="base-control-button control-btn" id="timer-reset"><span class="material-symbols-outlined">refresh</span></button>
                 </div>
                 <div class="button-container" id="stopwatch-control-buttons">
-                    <button class="control-btn" id="stopwatch-start"><span class="material-symbols-outlined">play_arrow</span></button>
-                    <button class="control-btn" id="stopwatch-stop"><span class="material-symbols-outlined">pause</span></button>
-                    <button class="control-btn" id="stopwatch-reset"><span class="material-symbols-outlined">refresh</span></button>
+                    <button class="base-control-button control-btn" id="stopwatch-start"><span class="material-symbols-outlined">play_arrow</span></button>
+                    <button class="base-control-button control-btn" id="stopwatch-stop"><span class="material-symbols-outlined">pause</span></button>
+                    <button class="base-control-button control-btn" id="stopwatch-reset"><span class="material-symbols-outlined">refresh</span></button>
                 </div>
             </div>
         </div>
         <div class="right-buttons-container" id="scale-buttons">
-            <button class="scale-button active straight-left-corner" data-scale="1">1</button> 
+            <button class="scale-button active straight-left-corner" data-scale="1">1</button>
             <button class="scale-button straight-left-corner" data-scale="2">2</button>
             <button class="scale-button straight-left-corner" data-scale="3">3</button>
         </div>
     </div>
 
-    <audio id="timer-alarm-sound" src="https://www.soundhelix.com/examples/audio/ID3.mp3" preload="auto"></audio> 
+    <audio id="timer-alarm-sound" src="https://www.soundhelix.com/examples/audio/ID3.mp3" preload="auto"></audio>
 
     <div id="alarmModal" class="modal">
         <div class="modal-content">
@@ -523,7 +523,7 @@
             const stopwatchControlButtons = document.getElementById('stopwatch-control-buttons');
             
             // 👈 새로 추가된 오디오 요소입니다!
-            const timerAlarmSound = document.getElementById('timer-alarm-sound'); 
+            const timerAlarmSound = document.getElementById('timer-alarm-sound');
             
             let displayMode = 'clock';
             
@@ -571,7 +571,7 @@
                     memoInput.style.display = 'block';
                 } else {
                     memoInput.style.display = 'none';
-                    saveMemo(); 
+                    saveMemo();
                 }
             }
             
@@ -584,7 +584,7 @@
                 
                 // 🔊 타이머 모드에서 다른 모드로 전환할 때 알람 소리가 나고 있다면 멈춥니다.
                 timerAlarmSound.pause();
-                timerAlarmSound.currentTime = 0; 
+                timerAlarmSound.currentTime = 0;
                 
                 timeAddButtons.classList.remove('active');
                 timerControlButtons.classList.remove('active');
@@ -662,7 +662,7 @@
                         clearInterval(timerInterval);
                         timerAlarmSound.play();
                         // ⭐ 변경: alert 함수를 showModal 함수로 대체 ⭐
-                        showModal(); 
+                        showModal();
                     }
                 }, 1000);
             }
@@ -783,7 +783,7 @@
 
             function setInitialPositions() {
                 const movableBounds = getMovableBounds();
-                const clockRect = clockContainer.getBoundingClientRect(); 
+                const clockRect = clockContainer.getBoundingClientRect();
                 const poolRect = poolContainer.getBoundingClientRect();
                 const clockBounds = {
                     left: clockRect.left - poolRect.left - 10,
@@ -843,7 +843,7 @@
                 const containerWidth = poolContainer.clientWidth;
                 const containerHeight = poolContainer.clientHeight;
 
-                const clockRect = clockContainer.getBoundingClientRect(); 
+                const clockRect = clockContainer.getBoundingClientRect();
                 const poolRect = poolContainer.getBoundingClientRect();
                 const clockBounds = {
                     left: clockRect.left - poolRect.left,
@@ -898,7 +898,7 @@
 
                     data.vx += forceX;
                     data.vy += forceY;
-                
+            
                     const speed = Math.sqrt(data.vx * data.vx + data.vy * data.vy);
                     if (speed > data.maxSpeed) {
                         data.vx = (data.vx / speed) * data.maxSpeed;
@@ -961,6 +961,8 @@
             });
 
             // 시간 추가 버튼 이벤트
+            // 💡 참고: 여기서는 이벤트 리스너가 클래스 이름에 의존하지 않고,
+            // 'time-add' 클래스를 포함하는 요소를 찾기 때문에 코드를 수정할 필요가 없어요!
             timeAddButtons.addEventListener('click', (event) => {
                 if (event.target.classList.contains('time-add')) {
                     const timeToAdd = parseInt(event.target.dataset.time);
@@ -1024,5 +1026,6 @@
     </script>
 </body>
 </html>
+
 
 
