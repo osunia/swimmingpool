@@ -8,446 +8,451 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <style>
-        /****************************
-        * 둥실둥실 수영장
-        * @ Floating Pool Demo
-        ****************************/
+<style>
+    /****************************
+    * 둥실둥실 수영장
+    * @ Floating Pool Demo
+    ****************************/
 
-        /* 전체 컨테이너 및 배경 */
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            transition: transform 0.3s ease;
-        }
+    /* 👈 추가: CSS 변수 선언 영역 */
+    :root {
+        --pool-width: 255.36px;
+    }
 
-        /* 수영장 영역 전체를 감싸는 컨테이너 */
-        .main-container {
-            display: flex;
-            align-items: flex-end;
-            gap: 0; /* 수영장과 오른쪽 버튼을 붙여줍니다 */
-        }
-        
-        /* 수영장과 상단 버튼을 감싸는 컨테이너 추가 */
-        .pool-and-header-container {
-            display: flex;
-            flex-direction: column;
-        }
+    /* 전체 컨테이너 및 배경 */
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        transition: transform 0.3s ease;
+    }
 
-        /* 상단 버튼 공간 */
-        .header-container {
-            width: 255.36px;
-            height: 50px;
-            background-color: white;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            border-top: 5px solid white;
-            border-left: 5px solid white;
-            border-right: 5px solid white;
-        }
+    /* 수영장 영역 전체를 감싸는 컨테이너 */
+    .main-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 0; /* 수영장과 오른쪽 버튼을 붙여줍니다 */
+    }
+    
+    /* 수영장과 상단 버튼을 감싸는 컨테이너 추가 */
+    .pool-and-header-container {
+        display: flex;
+        flex-direction: column;
+    }
 
-        .button-box {
-            display: flex;
-            gap: 20px;
-        }
+    /* 상단 버튼 공간 */
+    .header-container {
+        width: var(--pool-width); /* 👈 변경: 변수 적용 */
+        height: 50px;
+        background-color: white;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        border-top: 5px solid white;
+        border-left: 5px solid white;
+        border-right: 5px solid white;
+    }
 
-        /* 수영장 컨테이너 */
-        .pool-container {
-            position: relative;
-            width: 255.36px;
-            height: 192px;
-            overflow: hidden;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            background-size: cover;
-            background-image: url('https://i.imgur.com/Q9vjX1y.jpeg');
-            border-left: 5px solid white;
-            border-right: 5px solid white;
-            border-bottom: 5px solid white;
-        }
+    .button-box {
+        display: flex;
+        gap: 20px;
+    }
 
-        .pool-container.loaded {
-            opacity: 1;
-            visibility: visible;
-            transition-delay: 0s;
-        }
+    /* 수영장 컨테이너 */
+    .pool-container {
+        position: relative;
+        width: var(--pool-width); /* 👈 변경: 변수 적용 */
+        height: 192px;
+        overflow: hidden;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        background-size: cover;
+        background-image: url('https://i.imgur.com/Q9vjX1y.jpeg');
+        border-left: 5px solid white;
+        border-right: 5px solid white;
+        border-bottom: 5px solid white;
+    }
 
-        .pool-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            backdrop-filter: blur(0.8px);
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .object {
-            position: absolute;
-            background-size: contain;
-            background-repeat: no-repeat;
-            image-rendering: pixelated;
-            z-index: 5;
-            cursor: default;
-            transition: left 0.4s ease-out, top 0.4s ease-out;
-            animation: float 4s infinite ease-in-out alternate;
-        }
-        
-        @keyframes float {
-            from { transform: translateY(0); }
-            to { transform: translateY(-2px); }
-        }
+    .pool-container.loaded {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+    }
 
-        .object.rabbit {
-            width: 31.5px;
-            height: 31.5px;
-            background-image: url('https://i.imgur.com/kXoaqXr.png');
-        }
-        .object.tube {
-            width: 31.5px;
-            height: 31.5px;
-            background-image: url('https://i.imgur.com/20isCCd.png');
-        }
-        .object.ball {
-            width: 17.28px;
-            height: 17.28px;
-            background-image: url('https://i.imgur.com/ba8jxA2.png');
-        }
-        .object.rubberduck {
-            width: 22.05px;
-            height: 22.05px;
-            background-image: url('https://i.imgur.com/mWBVdql.png');
-        }
+    .pool-cover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        backdrop-filter: blur(0.8px);
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .object {
+        position: absolute;
+        background-size: contain;
+        background-repeat: no-repeat;
+        image-rendering: pixelated;
+        z-index: 5;
+        cursor: default;
+        transition: left 0.4s ease-out, top 0.4s ease-out;
+        animation: float 4s infinite ease-in-out alternate;
+    }
+    
+    @keyframes float {
+        from { transform: translateY(0); }
+        to { transform: translateY(-2px); }
+    }
 
-        /* 시계와 메모를 감싸는 컨테이너 */
-        .clock-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 15;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .object.rabbit {
+        width: 31.5px;
+        height: 31.5px;
+        background-image: url('https://i.imgur.com/kXoaqXr.png');
+    }
+    .object.tube {
+        width: 31.5px;
+        height: 31.5px;
+        background-image: url('https://i.imgur.com/20isCCd.png');
+    }
+    .object.ball {
+        width: 17.28px;
+        height: 17.28px;
+        background-image: url('https://i.imgur.com/ba8jxA2.png');
+    }
+    .object.rubberduck {
+        width: 22.05px;
+        height: 22.05px;
+        background-image: url('https://i.imgur.com/mWBVdql.png');
+    }
 
-        /* ⭐ 수정: 시계 페이지일 때만 아래로 이동 */
-        #mode-clock .clock-container {
-            transform: translate(-50%, -30%);
-        }
-        
-        /* 시계, 타이머, 스톱워치 모두 같은 높이로 통일 */
-        .clock {
-            color: white;
-            font-family: 'Silkscreen', sans-serif;
-            font-weight: 400;
-            text-shadow:
-                0 0 1px black,
-                0 0 2px black,
-                0 0 3px black;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .clock #date { font-size: 15px; }
-        .clock #time { 
-            font-size: 30px; 
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 2px;
-        }
-        
-        .clock #timer-display, .clock #stopwatch-display { 
-            font-size: 30px; 
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 2px;
-        }
-        
-        .stopwatch-text {
-            display: flex; 
-            align-items: center; 
-            line-height: 1;
-            font-size: 30px;
-            letter-spacing: 2px;
-        }
-        
-        .mode-button {
-            width: 30px;
-            height: 30px;
-            background-color: white;
-            border: 1px solid #d3d3d3;
-            border-bottom: 2px solid #737373;
-            border-right: 2px solid #737373;
-            border-radius: 5px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Silkscreen', sans-serif;
-            font-size: 10px;
-            color: #3d85c6;
-            box-sizing: border-box;
-        }
-        .mode-button:hover { 
-            background-color: #f0f8ff;
-        }
-        .mode-button:active, .mode-button.active {
-            background-color: white;
-            transform: translateY(1px);
-            border-bottom: 1px solid #737373;
-            border-right: 1px solid #737373;
-            color: #3d85c6;
-        }
-        .mode-button .material-symbols-outlined {
-            font-size: 15px;
-            line-height: 1;
-            color: #3d85c6;
-        }
-        .mode-button:active .material-symbols-outlined,
-        .mode-button.active .material-symbols-outlined {
-            color: #3d85c6;
-        }
+    /* 시계와 메모를 감싸는 컨테이너 */
+    .clock-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 15;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        /* 메모 입력창 스타일 */
-        #memo-input {
-            width: 150px;
-            margin-top: 10px;
-            padding: 5px 8px;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.5);
-            color: #3d85c6;
-            font-family: 'Silkscreen', sans-serif;
-            font-size: 12px;
-            box-sizing: border-box;
-            text-align: center;
-            outline: none;
-            pointer-events: auto;
-        }
-        #memo-input::placeholder {
-            color: rgba(61, 133, 198, 0.7);
-        }
-        #memo-input:focus {
-            background-color: white;
-        }
-        
-        .button-container {
-            display: flex;
-            width: 100%;
-            height: 40px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            pointer-events: none;
-            justify-content: center;
-            gap: 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s 0.3s;
-            z-index: 10;
-            align-items: flex-end;
-        }
-        .button-container.active {
-            opacity: 1;
-            visibility: visible;
-            transition-delay: 0s;
-            pointer-events: auto;
-        }
-        
-        #timer-control-buttons, #stopwatch-control-buttons {
-            padding: 0;
-        }
+    /* ⭐ 수정: 시계 페이지일 때만 아래로 이동 */
+    #mode-clock .clock-container {
+        transform: translate(-50%, -30%);
+    }
+    
+    /* 시계, 타이머, 스톱워치 모두 같은 높이로 통일 */
+    .clock {
+        color: white;
+        font-family: 'Silkscreen', sans-serif;
+        font-weight: 400;
+        text-shadow:
+            0 0 1px black,
+            0 0 2px black,
+            0 0 3px black;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    
+    .clock #date { font-size: 15px; }
+    .clock #time { 
+        font-size: 30px; 
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 2px;
+    }
+    
+    .clock #timer-display, .clock #stopwatch-display { 
+        font-size: 30px; 
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 2px;
+    }
+    
+    .stopwatch-text {
+        display: flex; 
+        align-items: center; 
+        line-height: 1;
+        font-size: 30px;
+        letter-spacing: 2px;
+    }
+    
+    .mode-button {
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        border: 1px solid #d3d3d3;
+        border-bottom: 2px solid #737373;
+        border-right: 2px solid #737373;
+        border-radius: 5px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Silkscreen', sans-serif;
+        font-size: 10px;
+        color: #3d85c6;
+        box-sizing: border-box;
+    }
+    .mode-button:hover { 
+        background-color: #f0f8ff;
+    }
+    .mode-button:active, .mode-button.active {
+        background-color: white;
+        transform: translateY(1px);
+        border-bottom: 1px solid #737373;
+        border-right: 1px solid #737373;
+        color: #3d85c6;
+    }
+    .mode-button .material-symbols-outlined {
+        font-size: 15px;
+        line-height: 1;
+        color: #3d85c6;
+    }
+    .mode-button:active .material-symbols-outlined,
+    .mode-button.active .material-symbols-outlined {
+        color: #3d85c6;
+    }
 
-        .time-add-buttons {
-            display: flex;
-            gap: 5px;
-            position: absolute;
-            bottom: 45px;
-            justify-content: center;
-            width: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s 0.3s;
-            z-index: 15;
-        }
-        .time-add-buttons.active {
-            opacity: 1;
-            visibility: visible;
-            transition-delay: 0s;
-        }
-        
-        .control-btn, .time-add {
-            font-family: 'Silkscreen', sans-serif;
-            font-size: 10px;
-            color: #3d85c6;
-            background-color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.7);
-            border-right: 2px solid rgba(255, 255, 255, 0.7);
-            border-radius: 5px; /* 내부 버튼들은 곡선 모서리 */
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.1s;
-            z-index: 15;
-        }
-        
-        .control-btn {
-            width: calc(100% / 3);
-            min-width: 30px;
-            height: 30px;
-            margin: 0;
-            border-radius: 5px; /* 👈 다시 둥글게 롤백했어요! */
-        }
-        
-        .time-add {
-            padding: 0 8px;
-            width: auto;
-            min-width: 30px;
-            height: 30px;
-        }
+    /* 메모 입력창 스타일 */
+    #memo-input {
+        width: 150px;
+        margin-top: 10px;
+        padding: 5px 8px;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.5);
+        color: #3d85c6;
+        font-family: 'Silkscreen', sans-serif;
+        font-size: 12px;
+        box-sizing: border-box;
+        text-align: center;
+        outline: none;
+        pointer-events: auto;
+    }
+    #memo-input::placeholder {
+        color: rgba(61, 133, 198, 0.7);
+    }
+    #memo-input:focus {
+        background-color: white;
+    }
+    
+    .button-container {
+        display: flex;
+        width: 100%;
+        height: 40px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        justify-content: center;
+        gap: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0s 0.3s;
+        z-index: 10;
+        align-items: flex-end;
+    }
+    .button-container.active {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+        pointer-events: auto;
+    }
+    
+    #timer-control-buttons, #stopwatch-control-buttons {
+        padding: 0;
+    }
 
-        .control-btn:active, .time-add:active {
-            transform: translateY(1px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-            border-right: 1px solid rgba(255, 255, 255, 0.7);
-        }
+    .time-add-buttons {
+        display: flex;
+        gap: 5px;
+        position: absolute;
+        bottom: 45px;
+        justify-content: center;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0s 0.3s;
+        z-index: 15;
+    }
+    .time-add-buttons.active {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+    }
+    
+    .control-btn, .time-add {
+        font-family: 'Silkscreen', sans-serif;
+        font-size: 10px;
+        color: #3d85c6;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+        border-right: 2px solid rgba(255, 255, 255, 0.7);
+        border-radius: 5px; /* 내부 버튼들은 곡선 모서리 */
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.1s;
+        z-index: 15;
+    }
+    
+    .control-btn {
+        width: calc(100% / 3);
+        min-width: 30px;
+        height: 30px;
+        margin: 0;
+        border-radius: 5px; /* 👈 다시 둥글게 롤백했어요! */
+    }
+    
+    .time-add {
+        padding: 0 8px;
+        width: auto;
+        min-width: 30px;
+        height: 30px;
+    }
 
-        .control-btn .material-symbols-outlined {
-            font-size: 20px;
-            color: #3d85c6;
-        }
+    .control-btn:active, .time-add:active {
+        transform: translateY(1px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+        border-right: 1px solid rgba(255, 255, 255, 0.7);
+    }
 
-        /* ----------------------- 오른쪽 버튼 수정 ----------------------- */
-        .right-buttons-container {
-            position: relative;
-            height: 202px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            z-index: 1;
-            margin-left: 0; /* 수영장과 딱 붙도록 수정 */
-        }
-        
-        .right-buttons-container .scale-button {
-            width: 24px;
-            height: 24px;
-            background-color: white;
-            border: none;
-            border-radius: 5px; /* 👈 기본적으로 둥글게! */
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Silkscreen', sans-serif;
-            font-size: 10px;
-            color: #c4c4c4;
-            box-sizing: border-box;
-            margin-top: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    .control-btn .material-symbols-outlined {
+        font-size: 20px;
+        color: #3d85c6;
+    }
 
-        /* 👈 크기 조정 버튼의 왼쪽 모서리만 직선으로! */
-        .right-buttons-container .scale-button.straight-left-corner { 
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-        
-        .right-buttons-container .scale-button:hover {
-            background-color: #f0f8ff;
-        }
+    /* ----------------------- 오른쪽 버튼 수정 ----------------------- */
+    .right-buttons-container {
+        position: relative;
+        height: 202px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        z-index: 1;
+        margin-left: 0; /* 수영장과 딱 붙도록 수정 */
+    }
+    
+    .right-buttons-container .scale-button {
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        border: none;
+        border-radius: 5px; /* 👈 기본적으로 둥글게! */
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Silkscreen', sans-serif;
+        font-size: 10px;
+        color: #c4c4c4;
+        box-sizing: border-box;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        .right-buttons-container .scale-button:active, 
-        .right-buttons-container .scale-button.active {
-            background-color: #e0f0ff;
-            transform: translateY(1px);
-            color: #3d85c6;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
+    /* 👈 크기 조정 버튼의 왼쪽 모서리만 직선으로! */
+    .right-buttons-container .scale-button.straight-left-corner { 
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    
+    .right-buttons-container .scale-button:hover {
+        background-color: #f0f8ff;
+    }
 
-        /* 확대/축소 애니메이션을 위한 CSS 변수 및 클래스 */
-        .main-container.scale-1x {
-            transform: scale(1);
-        }
-        .main-container.scale-2x {
-            transform: scale(1.5); /* 1.5배로 수정 */
-        }
-        .main-container.scale-3x {
-            transform: scale(2); /* 2배로 수정 */
-        }
-        /* ----------------------------------------------------------- */
+    .right-buttons-container .scale-button:active, 
+    .right-buttons-container .scale-button.active {
+        background-color: #e0f0ff;
+        transform: translateY(1px);
+        color: #3d85c6;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
 
-        /* ⭐ 추가된 모달 스타일 ⭐ */
-        .modal {
-            display: none; /* 초기에는 숨기기 */
-            position: fixed; /* 화면에 고정 */
-            z-index: 100; /* 모든 요소 위에 표시 */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.6); /* 반투명 검은색 배경 */
-            backdrop-filter: blur(2px);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 20% auto; /* 상하 여백, 가운데 정렬 */
-            padding: 20px;
-            border: 2px solid #888;
-            width: 80%; /* 모달 너비 */
-            max-width: 300px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            font-family: 'Silkscreen', sans-serif;
-            color: #3d85c6;
-        }
+    /* 확대/축소 애니메이션을 위한 CSS 변수 및 클래스 */
+    .main-container.scale-1x {
+        transform: scale(1);
+    }
+    .main-container.scale-2x {
+        transform: scale(1.5); /* 1.5배로 수정 */
+    }
+    .main-container.scale-3x {
+        transform: scale(2); /* 2배로 수정 */
+    }
+    /* ----------------------------------------------------------- */
 
-        .modal-content p {
-            font-size: 15px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+    /* ⭐ 추가된 모달 스타일 ⭐ */
+    .modal {
+        display: none; /* 초기에는 숨기기 */
+        position: fixed; /* 화면에 고정 */
+        z-index: 100; /* 모든 요소 위에 표시 */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.6); /* 반투명 검은색 배경 */
+        backdrop-filter: blur(2px);
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 20% auto; /* 상하 여백, 가운데 정렬 */
+        padding: 20px;
+        border: 2px solid #888;
+        width: 80%; /* 모달 너비 */
+        max-width: 300px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        font-family: 'Silkscreen', sans-serif;
+        color: #3d85c6;
+    }
 
-        .modal-content button {
-            background-color: #3d85c6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-family: 'Silkscreen', sans-serif;
-            font-size: 12px;
-            margin-top: 10px;
-        }
+    .modal-content p {
+        font-size: 15px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
 
-        .modal-content button:hover {
-            background-color: #2e6b9c;
-        }
-        /* ⭐ 모달 스타일 끝 ⭐ */
+    .modal-content button {
+        background-color: #3d85c6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-family: 'Silkscreen', sans-serif;
+        font-size: 12px;
+        margin-top: 10px;
+    }
 
-    </style>
+    .modal-content button:hover {
+        background-color: #2e6b9c;
+    }
+    /* ⭐ 모달 스타일 끝 ⭐ */
+
+</style>
 </head>
 <body>
     <div class="main-container scale-1x" id="main-container">
@@ -1014,3 +1019,4 @@
     </script>
 </body>
 </html>
+
